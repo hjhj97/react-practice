@@ -5,6 +5,7 @@ type InputFormProps = {
 };
 
 function InputForm({ addTodos }: InputFormProps) {
+  console.log("re-render");
   const todoRef = useRef<HTMLInputElement | null>(null);
 
   const handleSubmit = (e: FormEvent) => {
@@ -22,4 +23,4 @@ function InputForm({ addTodos }: InputFormProps) {
   );
 }
 
-export default InputForm;
+export default React.memo(InputForm);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import InputForm from "./components/InputForm";
 import TodoList from "./components/TodoList";
 
@@ -11,9 +11,9 @@ export type Todo = {
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  const addTodos = (name: string) => {
+  const addTodos = useCallback((name: string) => {
     setTodos((prev) => [...prev, { id: String(new Date().getTime()), name, isDone: false }]);
-  };
+  }, []);
 
   const deleteTodos = (id: string) => {
     setTodos(todos.filter((todo) => todo.id !== id));

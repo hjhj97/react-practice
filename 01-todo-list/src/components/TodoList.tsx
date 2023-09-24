@@ -16,10 +16,10 @@ function TodoList({ todos, deleteTodos, toggleTodos, updateTodos }: TodoListProp
     <div>
       {todos.map((todo) => (
         <div key={todo.id}>
-          {updateId === todo.id ? (
-            <input type="text" value={updatedText} onChange={(e) => setUpdatedText(e.target.value)} />
-          ) : (
+          {updateId !== todo.id ? (
             <span style={{ textDecoration: todo.isDone ? "line-through" : "none" }}>{todo.name}</span>
+          ) : (
+            <input type="text" value={updatedText} onChange={(e) => setUpdatedText(e.target.value)} />
           )}
           <button onClick={() => deleteTodos(todo.id)}>Delete</button>
           {updateId !== todo.id ? (

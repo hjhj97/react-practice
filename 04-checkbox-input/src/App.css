@@ -1,0 +1,13 @@
+button {
+  padding: 0.3rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid #333;
+  color: #333;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+button.selected {
+  border: 2px solid dodgerblue;
+  color: dodgerblue;
+}

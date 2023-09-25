@@ -1,7 +1,7 @@
-import { useState } from "react";
 import CheckboxTerm from "./components/CheckboxTerm";
+import useCheckboxTerm from "./hooks/useCheckboxTerm";
 
-type Term = {
+export type Term = {
   id: string;
   name: string;
   isRequired: boolean;
@@ -28,7 +28,7 @@ const data: Term[] = [
 ];
 
 function App() {
-  const [terms, setTerms] = useState<CheckboxTermType[]>(() => data.map((term) => ({ ...term, checked: false })));
+  const { terms, setTerms } = useCheckboxTerm(data);
   const onSuccess = () => alert("success");
 
   return (

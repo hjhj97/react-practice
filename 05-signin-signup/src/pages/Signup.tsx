@@ -6,6 +6,7 @@ function Signup() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -16,14 +17,23 @@ function Signup() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    console.log(signupData);
   };
 
-  const isNameValid = useMemo(() => {
+  const isPwdValid = useMemo(() => {
     return {
-      validLength: signupData.name.length >= 4 && signupData.name.length <= 10,
-      includeSpecialCharacter: signupData.name.includes("!"),
+      validLength: signupData.password.length >= 4 && signupData.password.length <= 10,
+      includeSpecialCharacter: signupData.password.includes("!"),
     };
-  }, [signupData.name]);
+  }, [signupData.password]);
+
+  const isPwdMatch = useMemo(() => {
+    return signupData.confirmPassword !== "" && signupData.password === signupData.confirmPassword;
+  }, [signupData.password, signupData.confirmPassword]);
+
+  const isAllValid = useMemo(() => {
+    return isPwdMatch && isPwdValid;
+  }, [isPwdMatch, isPwdValid]);
 
   return (
     <div>
@@ -34,34 +44,45 @@ function Signup() {
           <label htmlFor="name">name</label>
           <div>
             <input type="text" id="name" name="name" value={signupData.name} onChange={onChangeInput} />
-            <div>
-              <li className={`input-rule ${isNameValid.validLength && "valid"}`}>4글자 이상 10글자 이하</li>
-              <li className={`input-rule ${isNameValid.includeSpecialCharacter && "valid"}`}>특수문자 포함</li>
-            </div>
           </div>
         </div>
         <div className="input-field">
           <label htmlFor="name">email</label>
           <div>
-            <input type="email" id="email" name="email" />
+            <input type="email" id="email" name="email" value={signupData.email} onChange={onChangeInput} />
             {true && <p className="error-text">Error</p>}
           </div>
         </div>
         <div className="input-field">
           <label htmlFor="password">password</label>
           <div>
-            <input type="password" id="password" name="password" />
-            {true && <p className="error-text">Error</p>}
+            <input type="password" id="password" name="password" value={signupData.password} onChange={onChangeInput} />
+            <div>
+              <li className={`input-rule ${isPwdValid.validLength && "valid"}`}>4글자 이상 10글자 이하</li>
+              <li className={`input-rule ${isPwdValid.includeSpecialCharacter && "valid"}`}>특수문자 포함</li>
+            </div>
           </div>
         </div>
         <div className="input-field">
           <label htmlFor="confirm-password">confirm password</label>
           <div>
-            <input type="password" id="confirm-password" />
-            {true && <p className="error-text">Error</p>}
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirmPassword"
+              value={signupData.confirmPassword}
+              onChange={onChangeInput}
+            />
+            {!isPwdMatch && (
+              <div>
+                <p className="input-rule">비밀번호가 일치하지 않습니다.</p>
+              </div>
+            )}
           </div>
         </div>
-        <button type="submit">Signup</button>
+        <button type="submit" disabled={!isAllValid}>
+          Signup
+        </button>
       </form>
     </div>
   );

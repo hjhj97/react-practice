@@ -1,7 +1,9 @@
 import React, { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import "../App.css";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
   const [signupData, setSignupData] = useState({
     name: "",
     email: "",
@@ -17,8 +19,18 @@ function Signup() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(signupData);
+    alert("signup success");
+    navigate("/");
   };
+
+  const isNameValid = useMemo(() => {
+    return signupData.name != "";
+  }, [signupData.name]);
+
+  const isEmailValid = useMemo(() => {
+    const emailRegExp = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
+    return emailRegExp.test(signupData.email);
+  }, [signupData.email]);
 
   const isPwdValid = useMemo(() => {
     return {
@@ -32,8 +44,8 @@ function Signup() {
   }, [signupData.password, signupData.confirmPassword]);
 
   const isAllValid = useMemo(() => {
-    return isPwdMatch && isPwdValid;
-  }, [isPwdMatch, isPwdValid]);
+    return isPwdMatch && isPwdValid && isEmailValid && isNameValid;
+  }, [isPwdMatch, isPwdValid, isEmailValid, isNameValid]);
 
   return (
     <div>
@@ -50,7 +62,11 @@ function Signup() {
           <label htmlFor="name">email</label>
           <div>
             <input type="email" id="email" name="email" value={signupData.email} onChange={onChangeInput} />
-            {true && <p className="error-text">Error</p>}
+            {!isEmailValid && (
+              <div>
+                <p className="input-rule">이메일 형식을 확인해주세요</p>
+              </div>
+            )}
           </div>
         </div>
         <div className="input-field">

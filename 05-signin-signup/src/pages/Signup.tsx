@@ -1,6 +1,8 @@
 import React, { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
+import useInputForm from "../hooks/useInputForm";
+import InputField from "../components/InputField";
 
 function Signup() {
   const navigate = useNavigate();
@@ -17,6 +19,8 @@ function Signup() {
     setSignupData((prev) => ({ ...prev, [name]: text }));
   };
 
+  //const {} = useInputForm<string>({rule : })
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     alert("signup success");
@@ -27,10 +31,14 @@ function Signup() {
     return signupData.name != "";
   }, [signupData.name]);
 
-  const isEmailValid = useMemo(() => {
+  const isEmailValid = () => {
     const emailRegExp = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
     return emailRegExp.test(signupData.email);
-  }, [signupData.email]);
+  };
+  //const isEmailValid = useMemo(() => {
+  //  const emailRegExp = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
+  //  return emailRegExp.test(signupData.email);
+  //}, [signupData.email]);
 
   const isPwdValid = useMemo(() => {
     return {
@@ -44,31 +52,31 @@ function Signup() {
   }, [signupData.password, signupData.confirmPassword]);
 
   const isAllValid = useMemo(() => {
-    return isPwdMatch && isPwdValid && isEmailValid && isNameValid;
-  }, [isPwdMatch, isPwdValid, isEmailValid, isNameValid]);
+    return isPwdMatch && isPwdValid && isNameValid;
+  }, [isPwdMatch, isPwdValid, isNameValid]);
 
   return (
     <div>
       <h2>Signup</h2>
 
       <form onSubmit={handleSubmit} className="input-form">
-        <div className="input-field">
-          <label htmlFor="name">name</label>
-          <div>
-            <input type="text" id="name" name="name" value={signupData.name} onChange={onChangeInput} />
-          </div>
-        </div>
-        <div className="input-field">
-          <label htmlFor="name">email</label>
-          <div>
-            <input type="email" id="email" name="email" value={signupData.email} onChange={onChangeInput} />
-            {!isEmailValid && (
-              <div>
-                <p className="input-rule">이메일 형식을 확인해주세요</p>
-              </div>
-            )}
-          </div>
-        </div>
+        <InputField
+          labelText="name"
+          labelFor="name"
+          inputName="name"
+          value={signupData.name}
+          onChange={onChangeInput}
+        />
+
+        <InputField
+          labelText="email"
+          labelFor="email"
+          inputName="email"
+          rule={isEmailValid}
+          errorMsg="이메일 형식을 확인해주세요"
+          value={signupData.email}
+          onChange={onChangeInput}
+        />
         <div className="input-field">
           <label htmlFor="password">password</label>
           <div>

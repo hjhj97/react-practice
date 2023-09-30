@@ -1,19 +1,46 @@
 import { useState } from "react";
+import Modal from "./components/Modal";
+
+const BUTTON_WRAPPER_STYLES = {
+  position: "relative",
+  zIndex: 1,
+};
+
+const OTHER_CONTENTS_STYLES = {
+  position: "relative",
+  zIndex: 2,
+  backgroundColor: "red",
+};
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [result, setResult] = useState("");
+
+  const handleSubmitButton = (msg: string) => {
+    setIsOpen(false);
+    setResult(msg);
+  };
+  const handleCancelButton = (msg: string) => {
+    setIsOpen(false);
+    setResult(msg);
+  };
 
   return (
     <>
-      <div></div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div style={BUTTON_WRAPPER_STYLES}>
+        <button onClick={() => setIsOpen(true)}>Open Modal</button>
+        <Modal
+          open={isOpen}
+          onSubmit={handleSubmitButton}
+          onCancel={handleCancelButton}
+          onClose={() => setIsOpen(false)}
+        >
+          <div>This is Modal</div>
+        </Modal>
       </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+
+      <div style={OTHER_CONTENTS_STYLES}>Other Contents</div>
+      {result && <p>{result}</p>}
     </>
   );
 }

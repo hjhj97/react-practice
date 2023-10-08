@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "./components/Pagination";
+import "./style.css";
 
 export type Post = {
   id: number;

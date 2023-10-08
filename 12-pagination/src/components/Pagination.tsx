@@ -32,16 +32,24 @@ function Pagination({ posts, setPaginatedPosts }: PaginationProps) {
   }, [posts, curPage, setPaginatedPosts]);
 
   return (
-    <div style={{ display: "flex", gap: "1rem" }}>
-      {isPreviousValid && <span onClick={movePreviousSection}>&lt;</span>}
+    <div className="pagination-container">
+      {isPreviousValid && (
+        <span className="pagination-icon" onClick={movePreviousSection}>
+          &lt;
+        </span>
+      )}
       {paginationArray.map((page) => (
         <span key={page}>
-          <span style={{ color: curPage === page ? "red" : "black" }} onClick={() => setCurPage(page)}>
+          <span className={`pagination-icon ${curPage === page && "current"}`} onClick={() => setCurPage(page)}>
             {page}
           </span>
         </span>
       ))}
-      {isNextValid && <span onClick={moveNextSection}>&gt;</span>}
+      {isNextValid && (
+        <span className="pagination-icon" onClick={moveNextSection}>
+          &gt;
+        </span>
+      )}
     </div>
   );
 }

@@ -1,0 +1,10 @@
+.pagination-container {
+  display: flex;
+  gap: 1rem;
+}
+.pagination-icon {
+  cursor: pointer;
+}
+.pagination-icon.current {
+  color: red;
+}

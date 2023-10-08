@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import usePagination from "../hooks/usePagination";
 import { Post } from "../App";
 
@@ -24,7 +24,7 @@ function Pagination({ posts, setPaginatedPosts }: PaginationProps) {
     pagePerSection,
   });
 
-  const paginationArray = getPaginationArray();
+  const paginationArray = useMemo(getPaginationArray, [getPaginationArray]);
 
   useEffect(() => {
     const pageStartIdx = (curPage - 1) * itemPerPage;
